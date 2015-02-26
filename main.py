@@ -46,7 +46,15 @@ class ds18b20_sensor(sensor):
         """
         assert(False)
 
+def init_tables():
+    #TODO: Check if table has been created alread
+
+    #if not then create
+
+
 def init():
+
+    #Create class for each sensor and then create timer.
     for sensor in SENSOR_TIMING.keys():
         Timer(SENSOR_TIMING[sensor], print_time, ()).start()
 
