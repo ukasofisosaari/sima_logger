@@ -11,9 +11,6 @@ import database
 from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
 
 
-#This dict holds as values generic part of the sensor id. For example, DS18B20 always starts with 28-.
-#TODO: Figure out if this works for weight sensor as well
-SENSOR_FAMILY_CODES = {"28-": ds18b20_sensor}
 DS18B20_BASE_DIR = '/sys/bus/w1/devices/'
 DS18B20_DEVICE_FOLDER = glob.glob(DS18B20_BASE_DIR + '28*')[0]
 DS18B20_DEVICE_FILE = DS18B20_DEVICE_FOLDER + '/w1_slave'

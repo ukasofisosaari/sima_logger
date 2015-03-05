@@ -7,7 +7,7 @@
 
 import sqlite3
 
-from constant import DATABASE_NAME
+from constants import *
 
 def init_tables():
     #TODO: Check if table has been created already

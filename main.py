@@ -7,12 +7,14 @@
 
 from threading import Timer
 
-from sensor import ds18b20_sensor, SENSOR_FAMILY_CODES
+from sensor import ds18b20_sensor
 from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
 
 #List for storing sensor objects
 sensor_list = []
-
+#Key is the sensor family code/etc. For ds18b20 sensors, id always starts with the family code 28-
+#TODO: Figure out if this works for weight sensor as well and possible other sensors.
+sensor_classes = {"28-": ds18b20_sensor}
 
 def cleanup():
     pass
