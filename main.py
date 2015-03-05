@@ -24,10 +24,10 @@ def init():
     #Create class for each sensor and then create timer.
     for sensor_id in SENSOR_ID_LOCATIONS.keys():
         #Checking what kind of sensor it is and then using correct constructor
-        for sensor_family_code in SENSOR_FAMILY_CODES:
+        for sensor_family_code in sensor_classes:
             #We check if sensor id starts with
             if sensor_id.startswith(sensor_family_code):
-                sensor = SENSOR_FAMILY_CODES[sensor_family_code](sensor_id, SENSOR_ID_LOCATIONS[sensor_id])
+                sensor = sensor_classes[sensor_family_code](sensor_id, SENSOR_ID_LOCATIONS[sensor_id])
                 sensor_list.append()
 
 def main():
