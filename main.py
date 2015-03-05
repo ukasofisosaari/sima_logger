@@ -7,8 +7,8 @@
 
 from threading import Timer
 
-from sensor import ds18b20_sensor, sensor_family_codes
-from constants import TEMPERATURE_DATABASE_NAME, SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
+from sensor import ds18b20_sensor, SENSOR_FAMILY_CODES
+from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
 
 #List for storing sensor objects
 sensor_list = []
@@ -22,10 +22,10 @@ def init():
     #Create class for each sensor and then create timer.
     for sensor_id in SENSOR_ID_LOCATIONS.keys():
         #Checking what kind of sensor it is and then using correct constructor
-        for sensor_family_code in sensor_family_codes:
+        for sensor_family_code in SENSOR_FAMILY_CODES:
             #We check if sensor id starts with
             if sensor_id.startswith(sensor_family_code):
-                sensor = sensor_family_codes[sensor_family_code](sensor_id, descr_str)
+                sensor = SENSOR_FAMILY_CODES[sensor_family_code](sensor_id, SENSOR_ID_LOCATIONS[sensor_id])
                 sensor_list.append()
 
 def main():

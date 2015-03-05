@@ -7,11 +7,13 @@
 
 import sqlite3
 
+from constant import DATABASE_NAME
+
 def init_tables():
     #TODO: Check if table has been created already
-
+    pass
     #TODO: if not then create
-    
+
 def main():
 
     conn = sqlite3.connect(DATABASE_NAME)

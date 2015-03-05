@@ -8,12 +8,15 @@ from threading import Timer
 
 #Not sure of the database and what kind it should be yet so import everything.
 import database
-from constants import TEMPERATURE_DATABASE_NAME, SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
+from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
 
 
 #This dict holds as values generic part of the sensor id. For example, DS18B20 always starts with 28-.
 #TODO: Figure out if this works for weight sensor as well
-sensor_family_codes = {"28-": ds18b20_sensor}
+SENSOR_FAMILY_CODES = {"28-": ds18b20_sensor}
+DS18B20_BASE_DIR = '/sys/bus/w1/devices/'
+DS18B20_DEVICE_FOLDER = glob.glob(DS18B20_BASE_DIR + '28*')[0]
+DS18B20_DEVICE_FILE = DS18B20_DEVICE_FOLDER + '/w1_slave'
 
 class sensor(object):
     """ Sensor class. Used for dealing with indiividual sensors. 
@@ -49,15 +52,13 @@ class ds18b20_sensor(sensor):
         converting to celsius code as an example.
         
     """
-    BASE_DIR = '/sys/bus/w1/devices/'
-    DEVICE_FOLDER = glob.glob(base_dir + '28*')[0]
-    DEVICE_FILE = device_folder + '/w1_slave'
+    
     def __init__(self, sensor_id, descr_str):
         sensor.__init__(self, sensor_id, descr_str)
         #TODO: Check that this sensor is connected, if not throw exception.
 
     def _get_temperature(self):
-        f = open(device_file, 'r')
+        f = open(DS18B20_DEVICE_FILE, 'r')
         lines = f.readlines()
         f.close()
         return lines
@@ -68,10 +69,10 @@ class ds18b20_sensor(sensor):
         """
         #TODO: Create fetching of temperature
         
-        lines = _get_temperature()
+        lines = self._get_temperature()
         while lines[0].strip()[-3:] != 'YES':
             time.sleep(0.2)
-            lines = _get_temperature()
+            lines = self._get_temperature()
         equals_pos = lines[1].find('t=')
         if equals_pos != -1:
             temp_string = lines[1][equals_pos+2:]
