@@ -16,7 +16,7 @@ def init_tables():
 
 def main():
 
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(TEMPERATURE_DATABASE_NAME_DB)
     cursor = conn.cursor()
 
     #Save something to database

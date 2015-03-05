@@ -15,6 +15,25 @@ DS18B20_BASE_DIR = '/sys/bus/w1/devices/'
 DS18B20_DEVICE_FOLDER = glob.glob(DS18B20_BASE_DIR + '28*')[0]
 DS18B20_DEVICE_FILE = DS18B20_DEVICE_FOLDER + '/w1_slave'
 
+class RepeatTimer(object):
+    """ Timer that repeats after <interval>. Timer from threading doesnt do this,
+        so this improved timer that uses threading.Timer does. """
+    def __init__(self, interval, function, args=[], kwargs={}):
+        """
+        Used to initialize timer
+
+        @param interval nada
+        @param function nada
+        @param args not needed right now, maybe later
+        """
+        self._interval = interval
+        self._function = function
+        self._timer = None
+        self._args = args
+        self._kwargs = kwargs
+    def start(self):
+        self._timer = Timer(self._interval, self._function,  *self._args, **self._kwargs)
+
 class sensor(object):
     """ Sensor class. Used for dealing with indiividual sensors. 
         Will hold information such as sensor id, what to do 
@@ -27,21 +46,27 @@ class sensor(object):
     def __init__(self, sensor_id, descr_str):
         """
         Used to initialize sensor.
+
+        @param sensor_id nada
+        @param descr_str nada
         """
         print("Creating sensor with id: %s, with timing: %d and description: %s" % (sensor_id, SENSOR_TIMINGS[sensor_id], descr_str))
         self._sensor_id = sensor_id
         self._descr_str = descr_str
-        self._timer = Timer(SENSOR_TIMINGS[sensor_id], self.save_value, ())
+        self._timer = RepeatTimer(SENSOR_TIMINGS[sensor_id], self.save_value, ())
         self._timer.start()
-        
-    def __del__(self):
-        self._timer.cancel()
 
-    def save_value(self):
+    def _get_value(self):
         """
-            Virtual class
+            Virtual class.
         """
         assert(False)
+
+    def save_value(self):
+        """ Wrapper that handler commong operations for saving values and calls virtual function """
+        value = self._get_value()
+        print("From sensor: %s / %s got value: %s" % (self._sensor_id, self._descr_str, value))
+        self._timer.start()
 
 class ds18b20_sensor(sensor):
     """
@@ -55,27 +80,28 @@ class ds18b20_sensor(sensor):
         sensor.__init__(self, sensor_id, descr_str)
         #TODO: Check that this sensor is connected, if not throw exception.
 
-    def _get_temperature(self):
+    def _get_raw_data(self):
         f = open(DS18B20_DEVICE_FILE, 'r')
         lines = f.readlines()
         f.close()
         return lines
         
-    def save_value(self):
+    def _get_value(self):
         """
             Gets Temperature from the sensor and saves it to the database
+            @return Returns the value from the sensor
         """
         #TODO: Create fetching of temperature
         
-        lines = self._get_temperature()
+        lines = self._get_raw_data()
         while lines[0].strip()[-3:] != 'YES':
             time.sleep(0.2)
-            lines = self._get_temperature()
+            lines = self._get_raw_data()
         equals_pos = lines[1].find('t=')
         if equals_pos != -1:
             temp_string = lines[1][equals_pos+2:]
             temp_c = float(temp_string) / 1000.0
-            print temp_c
+            return temp_c
         
         
 class weight_sensor(sensor):
