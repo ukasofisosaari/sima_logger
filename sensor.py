@@ -32,7 +32,9 @@ class RepeatTimer(object):
         self._args = args
         self._kwargs = kwargs
     def start(self):
+	print("Timer started")
         self._timer = Timer(self._interval, self._function,  *self._args, **self._kwargs)
+        self._timer.start()
 
 class sensor(object):
     """ Sensor class. Used for dealing with indiividual sensors. 
