@@ -28,7 +28,7 @@ def init():
             #We check if sensor id starts with
             if sensor_id.startswith(sensor_family_code):
                 sensor = sensor_classes[sensor_family_code](sensor_id, SENSOR_ID_LOCATIONS[sensor_id])
-                sensor_list.append()
+                sensor_list.append(sensor)
 
 def main():
 
