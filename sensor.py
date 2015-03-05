@@ -28,9 +28,10 @@ class sensor(object):
         """
         Used to initialize sensor.
         """
+        print("Creating sensor with id: %s, with timing: %d and description: %s" % (sensor_id, SENSOR_TIMINGS[sensor_id], descr_str))
         self._sensor_id = sensor_id
         self._descr_str = descr_str
-        self._timer = Timer(SENSOR_TIMINGS[sensor_id], sensor.save_value, ())
+        self._timer = Timer(SENSOR_TIMINGS[sensor_id], self.save_value, ())
         self._timer.start()
         
     def __del__(self):
