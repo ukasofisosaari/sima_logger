@@ -24,7 +24,7 @@ class sensor(object):
         inherit.
     """
 
-    def __init__(self, sensor_id, descr_str, timing):
+    def __init__(self, sensor_id, descr_str):
         """
         Used to initialize sensor.
         """
