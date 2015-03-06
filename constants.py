@@ -10,6 +10,8 @@ import glob
 TEMPERATURE_DATABASE_NAME_DB = "simaattori_temperature.db"
 TEMPERATURE_DATABASE_NAME_JSON = "simaattori_temperature.json"
 
+DS18B20_BASE_DIR = '/sys/bus/w1/devices/'
+
 #Timer, key is sensor id, value is time in seconds. How often temperature values are saved.
 SENSOR_TIMINGS = {"28-000006564895": 3}
 #Sensor information

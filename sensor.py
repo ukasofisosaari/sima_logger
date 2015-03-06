@@ -8,12 +8,7 @@ from threading import Timer
 
 #Not sure of the database and what kind it should be yet so import everything.
 import database
-from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
-
-
-DS18B20_BASE_DIR = '/sys/bus/w1/devices/'
-DS18B20_DEVICE_FOLDER = glob.glob(DS18B20_BASE_DIR + '28*')[0]
-DS18B20_DEVICE_FILE = DS18B20_DEVICE_FOLDER + '/w1_slave'
+from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS, DS18B20_BASE_DIR
 
 class RepeatTimer(object):
     """ Timer that repeats after <interval>. Timer from threading doesnt do this,
@@ -31,6 +26,7 @@ class RepeatTimer(object):
         self._timer = None
         self._args = args
         self._kwargs = kwargs
+
     def start(self):
         self._timer = Timer(self._interval, self._function,  *self._args, **self._kwargs)
 
@@ -78,10 +74,11 @@ class ds18b20_sensor(sensor):
     
     def __init__(self, sensor_id, descr_str):
         sensor.__init__(self, sensor_id, descr_str)
+        self._device_file = glob.glob(DS18B20_BASE_DIR + sensor_id) + '/w1_slave'
         #TODO: Check that this sensor is connected, if not throw exception.
 
     def _get_raw_data(self):
-        f = open(DS18B20_DEVICE_FILE, 'r')
+        f = open(self._device_file, 'r')
         lines = f.readlines()
         f.close()
         return lines
