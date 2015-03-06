@@ -6,6 +6,7 @@
 """
 
 from threading import Timer
+from time import sleep
 
 from sensor import ds18b20_sensor
 from constants import SENSOR_ID_LOCATIONS, SENSOR_TIMINGS
@@ -34,7 +35,8 @@ def main():
 
     init()
     while 1:
-        pass
+        print("Looping")
+	sleep(2)
     
 
 if __name__ == "__main__":
