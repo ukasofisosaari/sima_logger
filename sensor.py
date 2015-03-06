@@ -3,7 +3,7 @@
     Also holds all sensor sub classes.
 @author Saku Rautiainen <saku.rautiainen@iki.fi>
 """
-import os, time, glob
+import os, time
 from threading import Timer
 
 #Not sure of the database and what kind it should be yet so import everything.
@@ -76,7 +76,7 @@ class ds18b20_sensor(sensor):
     
     def __init__(self, sensor_id, descr_str):
         sensor.__init__(self, sensor_id, descr_str)
-        self._device_file = glob.glob(DS18B20_BASE_DIR + sensor_id) + '/w1_slave'
+        self._device_file = DS18B20_BASE_DIR + sensor_id + '/w1_slave'
         #TODO: Check that this sensor is connected, if not throw exception.
 
     def _get_raw_data(self):
